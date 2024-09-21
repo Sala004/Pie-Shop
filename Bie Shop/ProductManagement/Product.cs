@@ -133,5 +133,19 @@ namespace Bie_Shop.ProductManagement
             return sb.ToString();
         }
 
+        protected void DecreaseStock(int items, string reason)
+        {
+            if(items <= AmountInStock)
+            {
+                AmountInStock -= items;
+            }
+            else
+            {
+                AmountInStock = 0;
+            }
+            
+            Log(reason);
+        }
+
     }
 }
