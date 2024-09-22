@@ -9,7 +9,7 @@ namespace Bie_Shop.ProductManagement
 {
     public class BulkProduct : Product
     {
-        public BulkProduct(int id, string name, string? description, Price price, UnitType unitType, int maxAmountInStock) : base(id, name, description, price, UnitType.PerKg, maxAmountInStock)
+        public BulkProduct(int id, string name, string? description, Price price, int maxAmountInStock) : base(id, name, description, price, UnitType.PerKg, maxAmountInStock)
         {
         }
     }

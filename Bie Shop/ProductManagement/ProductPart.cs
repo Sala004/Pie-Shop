@@ -25,13 +25,13 @@ namespace Bie_Shop.ProductManagement
             }
         }
 
-        private void Log(string message)
+        protected void Log(string message)
         {
             //this could be written to a file
             Console.WriteLine(message);
         }
 
-        private string createSimpleProductRepresentation()
+        protected string createSimpleProductRepresentation()
         {
             return $"Product {Id} ({Name})";
         }

@@ -1,13 +1,9 @@
-﻿using Bie_Shop.General;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Bie_Shop.Contracts;
+using Bie_Shop.General;
 
 namespace Bie_Shop.ProductManagement
 {
-    public class BoxedProduct : Product
+    public class BoxedProduct : Product, ISaveable
     {
         private int amountPerBox;
 
@@ -19,17 +15,18 @@ namespace Bie_Shop.ProductManagement
             }
             set
             {
-                if(amountPerBox > 0)
+                if (amountPerBox > 0)
                 {
                     amountPerBox = value;
                 }
             }
         }
-        public BoxedProduct(int id, string name, string? description, Price price, UnitType unitType, int maxAmountInStock) : base(id, name, description, price, UnitType.PerBox, maxAmountInStock)
+        public BoxedProduct(int id, string name, string? description, Price price, int maxAmountInStock, int amountPerBox) : base(id, name, description, price, UnitType.PerBox, maxAmountInStock)
         {
+            AmountPerBox = amountPerBox;
         }
 
-        public void UseBoxedProducts(int items)
+        public override void UseProduct(int items)
         {
             int smallestMultiple = 0;
             int batchSize;
@@ -45,5 +42,39 @@ namespace Bie_Shop.ProductManagement
             }
             UseProduct(batchSize);
         }
+
+        public override void IncreaseStock()
+        {
+            AmountInStock += AmountPerBox;
+        }
+
+        public override void IncreaseStock(int amount)
+        {
+            int newStock = AmountInStock + amount * amountPerBox;
+            if (newStock <= maxItemsInStock)
+            {
+                AmountInStock += amount * amountPerBox;
+            }
+            else
+            {
+                AmountInStock = maxItemsInStock;
+                Log($"{createSimpleProductRepresentation} stack overflow, {newStock - AmountInStock} item(s) ordered that couldn't be stored");
+            }
+
+            if(AmountInStock > StockThreshold)
+            {
+                IsBelowStockThreshold = false;
+            }
+        }
+
+        public string ConvertToStringForSaving()
+        {
+            return $"{Id};{Name};{Description};{maxItemsInStock};{Price.itemPrice};{(int)Price.Currency};{(int)UnitType}";
+        }
+
+        //public void Log(string message)
+        //{
+        //    Console.WriteLine(message);
+        //}
     }
 }

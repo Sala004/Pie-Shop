@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace Bie_Shop.ProductManagement
 {
-    internal class FreshBoxedProduct : BoxedProduct
-    {
-        public FreshBoxedProduct(int id, string name, string? description, Price price, UnitType unitType, int maxAmountInStock) : base(id, name, description, price, unitType, maxAmountInStock)
-        {
-        }
+    //internal class FreshBoxedProduct : BoxedProduct
+    //{
+    //    //public FreshBoxedProduct(int id, string name, string? description, Price price, UnitType unitType, int maxAmountInStock) : base(id, name, description, price, unitType, maxAmountInStock)
+    //    //{
+    //    //}
 
-        public void UseFreshBoxedProduct(int items)
-        {
-            UseBoxedProducts(items);
-        }
-    }
+    //    //public void UseFreshBoxedProduct(int items)
+    //    //{
+    //    //    UseProduct(items);
+    //    //}
+    //}
 }

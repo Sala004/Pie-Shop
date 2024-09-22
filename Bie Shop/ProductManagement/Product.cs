@@ -12,7 +12,7 @@ namespace Bie_Shop.ProductManagement
         private int id;
         private string name;
         private string? description; //nullable
-        private int maxItemsInStock = 0;
+        protected int maxItemsInStock = 0;
 
         public Product(int id, string name)
         {
@@ -59,11 +59,24 @@ namespace Bie_Shop.ProductManagement
         }
 
         public UnitType UnitType { get; set; }
-        public int AmountInStock { get; private set; }
-        public bool IsBelowStockThreshold { get; private set; }
+        public int AmountInStock { get; protected set; }
+        public bool IsBelowStockThreshold { get; protected set; }
         public Price Price { get; set; }
 
-        public void UseProduct(int items)
+        public Product(int id, string name, string? description, Price price, UnitType unitType, int maxAmountInStock)
+        {
+            Id = id;
+            Name = name;
+            Description = description;
+            Price = price;
+            UnitType = unitType;
+
+            maxItemsInStock = maxAmountInStock;
+
+            UpdateLowStock();
+        }
+
+        public virtual void UseProduct(int items)
         {
             if (items <= AmountInStock)
             {
@@ -78,12 +91,12 @@ namespace Bie_Shop.ProductManagement
             }
         }
 
-        public void IncreaseStock()
+        public virtual void IncreaseStock()
         {
             AmountInStock++;
         }
 
-        public void IncreaseStock(int amount)
+        public virtual void IncreaseStock(int amount)
         {
             int newStock = amount + AmountInStock;
             if (newStock <= maxItemsInStock)
@@ -100,19 +113,6 @@ namespace Bie_Shop.ProductManagement
                 IsBelowStockThreshold = false;
             }
 
-        }
-
-        public Product(int id, string name, string? description, Price price, UnitType unitType, int maxAmountInStock)
-        {
-            Id = id;
-            Name = name;
-            Description = description;
-            Price = price;
-            UnitType = unitType;
-
-            maxItemsInStock = maxAmountInStock;
-
-            UpdateLowStock();
         }
 
 
