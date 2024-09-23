@@ -1,4 +1,5 @@
 ﻿using Bie_Shop.General;
+using Bie_Shop.Contracts;
 using Bie_Shop.OrderManagement;
 using Bie_Shop.ProductManagement;
 using System;
@@ -64,6 +65,21 @@ namespace Bie_Shop
                     Console.WriteLine("Invalid selection. Please try again.");
                     break;
             }
+        }
+
+        public static void SaveAllData()
+        {
+            ProductRepository productRepository = new ProductRepository();
+            List<ISaveable> savables = new List<ISaveable>();
+
+            foreach (var item in inventory)
+            {
+                savables.Add(item as ISaveable);
+            }
+
+            productRepository.SaveToFile(savables);
+            Console.ReadLine();
+            ShowMainMenu();
         }
 
         private static void ShowAllProductsOverview()

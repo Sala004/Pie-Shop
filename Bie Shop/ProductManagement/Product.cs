@@ -7,18 +7,12 @@ using System.Threading.Tasks;
 
 namespace Bie_Shop.ProductManagement
 {
-    public partial class Product
+    public abstract partial class Product
     {
         private int id;
         private string name;
         private string? description; //nullable
         protected int maxItemsInStock = 0;
-
-        public Product(int id, string name)
-        {
-            Name = name;
-            Id = id;
-        }
 
         public int Id
         {
@@ -63,6 +57,17 @@ namespace Bie_Shop.ProductManagement
         public bool IsBelowStockThreshold { get; protected set; }
         public Price Price { get; set; }
 
+        public Product(int id, string name)
+        {
+            Name = name;
+            Id = id;
+        }
+
+        //constuctor with one parameter, calls the two parameters constructor
+        public Product(int id) : this(id, string.Empty)
+        {
+        }
+
         public Product(int id, string name, string? description, Price price, UnitType unitType, int maxAmountInStock)
         {
             Id = id;
@@ -91,10 +96,12 @@ namespace Bie_Shop.ProductManagement
             }
         }
 
-        public virtual void IncreaseStock()
-        {
-            AmountInStock++;
-        }
+        //public virtual void IncreaseStock()
+        //{
+        //    AmountInStock++;
+        //}
+
+        public abstract void IncreaseStock();
 
         public virtual void IncreaseStock(int amount)
         {
@@ -116,11 +123,11 @@ namespace Bie_Shop.ProductManagement
         }
 
 
-        public string DisplayDetailsShort()
+        public virtual string DisplayDetailsShort()
         {
             return $"{id} {name} \n{AmountInStock} items in stock";
         }
-        public string DisplayDetailsFull()
+        public virtual string DisplayDetailsFull()
         {
             StringBuilder sb = new();
             sb.AppendLine($"{id} {name} \n{description}\n{AmountInStock} item(s) in stock");

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Bie_Shop.Contracts
 {
-    public interface ISaveable
+    internal interface ISaveable
     {
         string ConvertToStringForSaving();
     }

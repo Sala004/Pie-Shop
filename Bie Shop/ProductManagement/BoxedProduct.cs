@@ -40,7 +40,7 @@ namespace Bie_Shop.ProductManagement
                     break;
                 }
             }
-            UseProduct(batchSize);
+            base.UseProduct(batchSize);
         }
 
         public override void IncreaseStock()
@@ -69,7 +69,7 @@ namespace Bie_Shop.ProductManagement
 
         public string ConvertToStringForSaving()
         {
-            return $"{Id};{Name};{Description};{maxItemsInStock};{Price.itemPrice};{(int)Price.Currency};{(int)UnitType}";
+            return $"{Id};{Name};{Description};{maxItemsInStock};{Price.itemPrice};{(int)Price.Currency};{(int)UnitType};{1}; {AmountPerBox}";
         }
 
         //public void Log(string message)

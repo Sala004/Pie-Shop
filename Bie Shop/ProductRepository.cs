@@ -1,4 +1,5 @@
-﻿using Bie_Shop.General;
+﻿using Bie_Shop.Contracts;
+using Bie_Shop.General;
 using Bie_Shop.ProductManagement;
 using System;
 using System.Collections.Generic;
@@ -65,16 +66,31 @@ namespace Bie_Shop
                     {
                         unitType = UnitType.PerItem; //default value
                     }
+                    string productType = productSplits[7];
+                    Product product = null;
 
-                    Product product = new Product
-                    (
-                        productId,
-                        name,
-                        description,
-                        new Price() { Currency = currency, itemPrice = ItemPrice },
-                        unitType,
-                        maxItemsInStock
-                    );
+                    switch (productType)
+                    {
+                        case "1":
+                            success = int.TryParse(productSplits[8], out int amountPerBox);
+                            if (!success)
+                            {
+                                amountPerBox = 1;//default value
+                            }
+
+                            product = new BoxedProduct(productId, name, description, new Price() { itemPrice = ItemPrice, Currency = currency }, maxItemsInStock, amountPerBox);
+                            break;
+
+                        case "2":
+                            product = new FreshProduct(productId, name, description, new Price() { itemPrice = ItemPrice, Currency = currency }, unitType, maxItemsInStock);
+                            break;
+                        case "3":
+                            product = new BulkProduct(productId, name, description, new Price() { itemPrice = ItemPrice, Currency = currency }, maxItemsInStock);
+                            break;
+                        case "4":
+                            product = new RegularProduct(productId, name, description, new Price() { itemPrice = ItemPrice, Currency = currency }, unitType, maxItemsInStock);
+                            break;
+                    }
 
                     products.Add(product);
                 }
@@ -104,6 +120,22 @@ namespace Bie_Shop
             }
 
             return products;
+        }
+
+        public void SaveToFile(List<ISaveable> saveables)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach(var item in saveables)
+            {
+                sb.Append(item.ConvertToStringForSaving());
+                sb.Append(Environment.NewLine);
+            }
+
+            File.WriteAllText(filePath, sb.ToString());
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Saved items successfully");
+            Console.ResetColor();
         }
     }
 }
