@@ -124,6 +124,12 @@ namespace Bie_Shop
 
         public void SaveToFile(List<ISaveable> saveables)
         {
+            if (saveables == null || saveables.Count == 0)
+            {
+                Console.WriteLine("No items to save!");
+                return;
+            }
+
             StringBuilder sb = new StringBuilder();
             foreach(var item in saveables)
             {

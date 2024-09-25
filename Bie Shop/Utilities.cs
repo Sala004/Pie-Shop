@@ -57,7 +57,7 @@ namespace Bie_Shop
                     ShowSettingsMenu();
                     break;
                 case "4":
-                    //SaveAllData();
+                    SaveAllData();
                     break;
                 case "0":
                     break;
@@ -126,7 +126,7 @@ namespace Bie_Shop
                         break;
 
                     case "2":
-                        //ShowCreateNewProduct();
+                        ShowCreateNewProduct();
                         break;
 
                     case "3":
@@ -225,7 +225,11 @@ namespace Bie_Shop
             Console.Write("Enter the maximum number of items in stock for this product: ");
             int maxInStock = int.Parse(Console.ReadLine() ?? "0");
 
-            int newId = inventory.Max(p => p.Id) + 1;//find highest id and increase with 1
+            int newId = 1; //will be used if there are no items in the stock
+            if (inventory.Count > 0)
+            {
+                newId = inventory.Max(p => p.Id); //find highest id and increase with 1
+            }
 
             switch (productType)
             {
@@ -238,7 +242,7 @@ namespace Bie_Shop
                     break;
 
                 case "3":
-                    Console.Write("Enter the number storage instructions: ");
+                    Console.Write("Enter the storage instructions: ");
                     string storageInstructions = Console.ReadLine() ?? string.Empty;
 
                     Console.Write("Enter the expiry date: ");
@@ -247,6 +251,7 @@ namespace Bie_Shop
                     newProduct = new FreshProduct(newId++, name, description, new Price() { itemPrice = price, Currency = currency }, unitType, maxInStock);
 
                     FreshProduct? fp = newProduct as FreshProduct; //if it doesn't match, it will be null
+
                     fp.StorageInstructions = storageInstructions;
                     fp.ExpiryDateTime = expiryDate;
 
@@ -265,6 +270,9 @@ namespace Bie_Shop
                     newProduct = new BoxedProduct(newId++, name, description, new Price() { itemPrice = price, Currency = currency }, maxInStock, numberInBox);
                     break;
             }
+
+            if (newProduct != null)
+                inventory.Add(newProduct);
         }
 
         public static void ShowAllUnitTypes()

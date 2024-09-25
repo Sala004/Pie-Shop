@@ -154,5 +154,10 @@ namespace Bie_Shop.ProductManagement
             Log(reason);
         }
 
+        protected virtual double GetProductStockValue()
+        {
+            return Price.itemPrice * AmountInStock;
+        }
+
     }
 }

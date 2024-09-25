@@ -3,7 +3,7 @@ using Bie_Shop.General;
 
 namespace Bie_Shop.ProductManagement
 {
-    public class BoxedProduct : Product, ISaveable
+    public sealed class BoxedProduct : Product, ISaveable
     {
         private int amountPerBox;
 

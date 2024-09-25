@@ -17,6 +17,15 @@ namespace Bie_Shop.ProductManagement
         {
         }
 
+        protected override double GetProductStockValue()
+        {
+            if (DateTime.Now > ExpiryDateTime) 
+            {
+                return Price.itemPrice * AmountInStock * 0.8; //since the product is expired, the value is lower
+            }
+            return Price.itemPrice * AmountInStock;
+
+        }
         public override string DisplayDetailsFull()
         {
             StringBuilder sb = new StringBuilder();
